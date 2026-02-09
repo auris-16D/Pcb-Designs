@@ -3,7 +3,7 @@
 ## Contract Inheritance
 This project **inherits and is governed by**:
 
-- `pcb-design-contract.md`
+- [`pcb-design-contract.md`](../../pcb-design-contract.md)
 
 All rules, invariants, and validation requirements in the base contract apply unless explicitly overridden here.
 
