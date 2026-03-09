@@ -1,110 +1,156 @@
-# Project State / Overlay
+# Project State Template
 
-## Contract Inheritance
-This project **inherits and is governed by**:
+## Project Name
 
-- `pcb-design-contract.md`
-
-All rules, invariants, and validation requirements in the base contract apply unless explicitly overridden here.
+Provide a short descriptive name for the project.
 
 ---
 
-## Project Identification
-- **Project name:**
-- **Repository path:**
-- **Current revision:**
-- **Status:** (e.g. concept / schematic / layout / prototype / verified)
+# Project Objective
+
+What is the goal of this project?
+
+Examples:
+
+- Design a new PCB
+- Modify an existing amplifier
+- Analyse a circuit
+- Reverse engineer hardware
 
 ---
 
-## Intent & Scope
-**Purpose of this PCB:**
+# Known Facts
 
-- (Describe what the board does, not how it is implemented.)
+Facts confirmed through:
 
-**Out of scope:**
+- schematics
+- measurements
+- datasheets
+- user confirmation
 
-- (Explicitly state what this board is not intended to do.)
+Example:
 
----
-
-## External Interfaces
-**Power rails:**
-- (e.g. +15 V external, +5 V local, etc.)
-
-**Signals / connectors:**
-- (List key interfaces and expectations.)
-
-**Grounding assumptions:**
-- (e.g. ground always common via connector.)
+- Amplifier model: Roksan Kandy KA-1 Mk1
+- Speakers: Sonus Faber Grand Piano Home
+- Power amplifier topology: discrete class AB
 
 ---
 
-## Architectural Summary
-**High-level block description:**
+# Assumptions
 
-- Power input and regulation
-- Control / logic blocks
-- Actuators (relays, LEDs, outputs)
-- Signal routing
+Temporary beliefs used for reasoning but not yet confirmed.
 
-(Keep this descriptive, not schematic-level.)
+Example:
 
----
+- The power amp input may be AC-coupled.
+- The video input likely feeds the selector IC.
 
-## Proven Blocks
-The following blocks have been **explicitly validated** under the base contract:
-
-- Block name:
-  - Validation method: (current-path analysis / ngspice simulation / bench test)
-  - Evidence location: (file, screenshot, commit hash)
+Assumptions should eventually be **confirmed or removed**.
 
 ---
 
-## Unproven / Under Review
-The following blocks **must not be modified or relied upon** without further proof:
+# Inferences
 
-- Block name:
-  - Open questions:
-  - Required validation:
+Logical conclusions drawn from known facts.
 
----
+Example:
 
-## Assumptions
-List assumptions that affect correctness:
-
-- (e.g. PROTECT_OK is a hard +15 V rail from host system.)
-- (e.g. relay coils energise simultaneously.)
-
-Assumptions must be validated or retired.
+- The amplifier preamp and power amp sections are separated by L OUT / R OUT nodes.
+- This separation enables potential HT bypass insertion.
 
 ---
 
-## Change Log (Design-Relevant)
-Record only changes that affect behaviour:
+# Unknowns / Questions
 
-- **Date / Rev:**
-  - What changed:
-  - Why:
-  - Proof invalidated:
-  - Proof added:
+Things that must be confirmed before implementation.
 
----
+Examples:
 
-## Do-Not-Change Without Re-Proof
-The following must not be altered without explicit re-validation:
-
-- (e.g. relay drive topology)
-- (e.g. power sequencing logic)
-- (e.g. ground reference scheme)
+- Exact node feeding the power amplifier input
+- Input impedance of the power amplifier stage
+- Available supply rails for relay control
 
 ---
 
-## Open Risks
-Known risks or edge cases:
+# Design Constraints
 
-- (e.g. power-down timing, backfeeding risk, etc.)
+Constraints that limit design choices.
+
+Examples:
+
+- Must preserve original amplifier sound quality
+- Must avoid drilling new holes in chassis
+- Must remain reversible if possible
 
 ---
 
-**End of Project Overlay**
+# Risks
+
+Potential problems or hazards.
+
+Examples:
+
+- Ground loop between AV receiver and amplifier
+- DC offset injection into power amp
+- Switching noise damaging speakers
+
+---
+
+# Design Decisions
+
+Record any agreed decisions.
+
+Example:
+
+- Use existing VIDEO RCA sockets for HT bypass
+- Implement relay-based switching
+- Use speaker protection circuit for pop suppression
+
+---
+
+# Verification Checklist (New)
+
+Before implementing a circuit modification confirm:
+
+- [ ] Exact schematic node identified
+- [ ] AC or DC coupling verified
+- [ ] Input impedance known
+- [ ] Supply rails identified
+- [ ] Protection circuits understood
+
+---
+
+# Design Confidence (New)
+
+Confidence level for the current design state.
+
+Example:
+
+```
+Confidence Level: Medium
+
+Reason:
+- schematic mostly verified
+- some nodes still need confirmation
+```
+
+---
+
+# Next Actions
+
+Concrete next steps.
+
+Examples:
+
+- Verify preamp output node
+- Identify speaker relay control signal
+- Design relay switching circuit
+- Prototype modification
+
+---
+
+# Notes
+
+Additional observations, thoughts, or references.
+
+This section acts as the project's engineering notebook.
