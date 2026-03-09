@@ -1,18 +1,26 @@
-# Project Context
+# Project State
 ## Roksan Kandy KA-1 HT Bypass Modification
+
+---
+
+# Project Status
+
+Phase: Analysis  
+Design Confidence: Medium  
+Implementation Approved: No  
 
 ---
 
 # Project Objective
 
-Modify a **Roksan Kandy KA-1 Mk1 integrated amplifier** so that the existing **VIDEO input** can function as a **Home Theatre (HT) bypass input** when required.
+Modify a **Roksan Kandy KA-1 Mk1 integrated amplifier** so the existing **VIDEO input** can optionally operate as a **Home Theatre (HT) bypass input**.
 
-This allows the amplifier to:
+This will allow the amplifier to:
 
-- Power speakers for **two-channel music**
-- Act as a **power amplifier for cinema front channels**
+- Drive speakers normally for **two-channel music**
+- Act as a **power amplifier for the front channels of a cinema system**
 
-while preserving the original audio quality.
+while preserving the amplifier’s existing sound quality.
 
 ---
 
@@ -20,34 +28,49 @@ while preserving the original audio quality.
 
 Current equipment:
 
-- Amplifier: Roksan Kandy KA-1 Mk1
-- Speakers: Sonus Faber Grand Piano Home
-- Planned addition: AV receiver / cinema processor
-- Video projection system
+Amplifier  
+- Roksan Kandy KA-1 Mk1
+
+Speakers  
+- Sonus Faber Grand Piano Home (walnut)
+
+Future system components
+
+- AV receiver or cinema processor
+- Projector-based cinema system
+
+Goal
+
+Use **one pair of speakers for both music and cinema** without degrading music performance.
 
 ---
 
 # Desired Behaviour
 
-## Integrated Mode
+## Integrated Mode (Normal Operation)
 
-Normal amplifier operation.
+Amplifier behaves exactly as designed.
+
+Signal flow:
 
 ```
 Selected source
-→ Roksan preamp
+→ Roksan input selector
+→ preamp stages
 → volume control
 → power amplifier
 → speakers
 ```
 
-VIDEO input behaves as a normal line input.
+VIDEO input behaves as a **standard line-level input**.
 
 ---
 
 ## HT Bypass Mode
 
-VIDEO input becomes direct power amp input.
+VIDEO input becomes a **direct power amplifier input**.
+
+Signal flow:
 
 ```
 AV receiver front L/R pre-out
@@ -57,27 +80,38 @@ AV receiver front L/R pre-out
 → speakers
 ```
 
-The Roksan volume control is bypassed.
+Key behaviour
 
-Volume controlled by the AV receiver.
+- Roksan preamp is bypassed
+- Roksan volume control is bypassed
+- Volume controlled by the AV receiver
 
 ---
 
 # Design Goals
 
-- Preserve original amplifier sound
-- Avoid unnecessary chassis modification
-- Use existing VIDEO RCA sockets
-- Maintain safety for speakers
-- Ensure reversible modification where possible
+- Preserve the **existing Roksan sound signature**
+- Avoid unnecessary modification of the amplifier chassis
+- Reuse the **existing VIDEO RCA sockets**
+- Prevent switching noise reaching the speakers
+- Maintain a **reversible modification where possible**
+- Ensure compatibility with AV receiver pre-outs
 
 ---
 
 # Proposed Architecture
 
-Two modes controlled by a **rear panel HT mode switch**.
+The modification introduces:
 
-### Integrated Mode
+- A **relay-based signal routing stage**
+- A **rear panel mode switch**
+- Integration with the **existing speaker protection relay for pop suppression**
+
+---
+
+## Integrated Mode
+
+VIDEO input routed normally.
 
 ```
 VIDEO RCA
@@ -87,7 +121,11 @@ VIDEO RCA
 → power amp
 ```
 
-### HT Mode
+---
+
+## HT Bypass Mode
+
+VIDEO input routed directly to the power amplifier input.
 
 ```
 VIDEO RCA
@@ -95,69 +133,135 @@ VIDEO RCA
 → power amp input
 ```
 
+Preamp output is disconnected from the power amp input in this mode.
+
 ---
 
 # Pop Suppression Strategy
 
-During mode switching:
+To protect the speakers from switching transients:
 
-1. Speaker protection circuit temporarily disconnects speakers
-2. Signal routing relay changes state
-3. Speakers reconnect after short delay
+1. Mode switch triggers a **temporary mute**
+2. Speaker protection relay disconnects speakers
+3. Signal routing relay changes state
+4. Short delay expires
+5. Speaker relay reconnects speakers
 
-This prevents switching transients.
+This prevents switching artefacts reaching the speakers.
 
 ---
 
 # Known Facts
 
+- Amplifier model: **Roksan Kandy KA-1 Mk1**
 - Preamp output nodes labelled **L OUT / R OUT**
-- These feed the main power amplifier stage
-- Amplifier includes speaker protection relay
+- These feed the **main power amplifier input**
+- Amplifier contains **speaker protection relays**
 - VIDEO input exists on rear panel
+- Amplifier is approximately **25 years old**
+- Amplifier topology is **discrete class AB**
 
 ---
 
 # Assumptions
 
-- VIDEO input routes through selector IC
-- Power amp input is accessible from preamp output node
-- Protection circuit can be triggered for temporary mute
+These must be verified before implementation.
+
+- VIDEO RCA sockets feed the **input selector IC**
+- Preamp and power amp sections are separated at **L OUT / R OUT**
+- Power amplifier input impedance is suitable for AV receiver output
+- Speaker protection relay control signal is accessible
 
 ---
 
-# Unknowns
+# Inferences
 
-- Exact power amp input impedance
-- Whether power amp input is AC-coupled
-- Exact speaker relay control node
+Based on schematic review:
+
+- The amplifier has a **clear preamp → power amp boundary**
+- This boundary allows insertion of a **relay switching stage**
+- The VIDEO input is a convenient candidate for HT bypass
+
+---
+
+# Unknowns / Questions
+
+These must be verified before implementation.
+
+- Is the **power amp input AC or DC coupled**
+- Exact **power amp input impedance**
+- Exact **speaker protection relay control node**
+- Whether VIDEO input routing can be safely isolated from the selector IC
+- Available **supply rail for relay control**
+
+---
+
+# Design Constraints
+
+- Modification must not degrade audio quality
+- Modification should be **reversible**
+- Existing chassis should not be modified unnecessarily
+- Must maintain safe operation with valuable speakers
 
 ---
 
 # Risks
 
-- Switching noise reaching speakers
+Potential technical risks:
+
+- Switching transient reaching speakers
 - Ground loop between AV receiver and amplifier
-- Incorrect node identification causing DC injection
+- Incorrect node identification introducing DC into the power amp
+- Selector circuit interaction with bypass signal
+
+---
+
+# Verification Checklist
+
+Before implementing the modification confirm:
+
+- [ ] Exact **preamp output node**
+- [ ] Exact **power amplifier input node**
+- [ ] Whether the input stage is **AC or DC coupled**
+- [ ] Input impedance of the power amp
+- [ ] Location of speaker relay control
+- [ ] Suitable supply rail for relay control
 
 ---
 
 # Design Confidence
 
+Current confidence level:
+
 ```
 Confidence Level: Medium
+```
 
 Reason:
-- amplifier topology understood
-- exact nodes still to be verified
-```
+
+- Overall amplifier topology is understood
+- HT bypass architecture is well established
+- Exact nodes and coupling still need confirmation
 
 ---
 
 # Next Actions
 
-1. Verify preamp output nodes
-2. Verify power amp input coupling
-3. Identify protection relay control signal
-4. Design relay switching circuit
-5. Prototype implementation
+1. Verify **preamp output nodes**
+2. Verify **power amp input coupling**
+3. Identify **speaker protection relay control signal**
+4. Confirm **VIDEO input routing**
+5. Design relay switching circuit
+6. Prototype modification
+
+---
+
+# Notes
+
+This project follows the repository engineering workflow:
+
+```
+analysis → verified design → implementation
+```
+
+Design work should not proceed to implementation until the **verification checklist is complete**.
